@@ -5,7 +5,7 @@ import MessageContainer from './components/MessageContainer';
 function App() {
     return (
         <div className='App'>
-            <Header title='MAI' />
+            <Header title='Chatbot Demo' />
             <MessageContainer />
             <InputPanel />
         </div>

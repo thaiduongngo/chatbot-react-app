@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { clearAll } from '../features/message/messagesSlice';
 import { FaTimesCircle } from 'react-icons/fa';
-import { SiRobotframework } from 'react-icons/si';
 import {
     BsFillArrowDownCircleFill,
     BsFillArrowUpCircleFill,
@@ -29,9 +28,6 @@ const Header = ({ title }) => {
     return (
         <div className='header'>
             <div>
-                <span className='robot__icon'>
-                    <SiRobotframework />
-                </span>
                 <span className='bot__title'>{title}</span>
             </div>
             <div className='nav__topdown'>
@@ -58,8 +54,8 @@ const Header = ({ title }) => {
             </div>
             <ConfirmModal
                 show={show}
-                textHeader='Confirm Close'
-                textContent='Do you want to close the App?'
+                textHeader='Xác nhận đóng'
+                textContent='Bạn có muốn đóng App?'
                 onHide={() => {
                     setShow(false);
                 }}
@@ -72,8 +68,8 @@ const Header = ({ title }) => {
 
             <ConfirmModal
                 show={showClear}
-                textHeader='Confirm Clear'
-                textContent='Do you want to clear all messages?'
+                textHeader='Xác nhận xoá tất cả'
+                textContent='Bạn có muốn xoá tất cả tin nhắn?'
                 onHide={() => {
                     setShowClear(false);
                 }}

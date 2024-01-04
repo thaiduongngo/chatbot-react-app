@@ -15,14 +15,14 @@ const ConfirmModal = ({ show, textHeader, textContent, onHide, onYes }) => {
             <Modal.Body>{textContent}</Modal.Body>
             <Modal.Footer>
                 <Button variant='danger' onClick={onYes}>
-                    Yes
+                    Đồng ý
                 </Button>
                 <Button
                     onClick={() => {
                         onHide();
                     }}
                 >
-                    No
+                    Huỷ bỏ
                 </Button>
             </Modal.Footer>
         </Modal>

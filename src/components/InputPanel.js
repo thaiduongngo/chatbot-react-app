@@ -6,29 +6,16 @@ import {
     setInputMsg,
     setMsgs,
     fetchMessage,
-    fetchForex,
-    fetchWeather,
 } from '../features/message/messagesSlice';
 import ConfirmModal from './ConfirmModal';
 
 const InputPanel = () => {
     const dispatch = useDispatch();
-    const { inputText, inputMsg, resMsg, msgs } = useSelector(
+    const { inputText, resMsg, msgs } = useSelector(
         store => store.messages
     );
+
     const [show, setShow] = useState(false);
-
-    useEffect(() => {
-        const fetchSub = () => {
-            if (resMsg.context === 'forex') {
-                dispatch(fetchForex());
-            } else if (resMsg.context === 'weather') {
-                dispatch(fetchWeather());
-            }
-        };
-
-        resMsg && fetchSub();
-    }, [inputMsg, resMsg, dispatch]);
 
     useEffect(() => {
         if (resMsg?.context === 'quit') {
@@ -58,6 +45,14 @@ const InputPanel = () => {
                 top: false,
             };
 
+            const resMes = {
+                id: 0,
+                inputText: mes.text,
+                left: true,
+                top: true,
+                all_msgs: msgs,
+            };
+
             dispatch(setInputMsg(mes));
             dispatch(
                 setMsgs([
@@ -65,9 +60,10 @@ const InputPanel = () => {
                         return { ...m, top: false };
                     }),
                     mes,
+                    resMes,
                 ])
             );
-            dispatch(fetchMessage(mes.text));
+            dispatch(fetchMessage(resMes));
             dispatch(setInputText(''));
         };
 
@@ -80,7 +76,7 @@ const InputPanel = () => {
                 <input
                     type='text'
                     className='input input__message'
-                    placeholder='Say something'
+                    placeholder='Chat với tôi'
                     value={inputText}
                     onChange={e => {
                         dispatch(setInputText(e.target.value));
@@ -98,8 +94,8 @@ const InputPanel = () => {
             </div>
             <ConfirmModal
                 show={show}
-                textHeader='Confirm Close'
-                textContent='Do you want to close the App?'
+                textHeader='Đóng'
+                textContent='Xác nhận đóng App?'
                 onHide={() => {
                     setShow(false);
                 }}

@@ -17,14 +17,14 @@ body {
     width: 100vw;
     max-width: 540px;
     height: 100vh;
-    background: blueviolet;
+    background: #BE3144;
 }
 
 .header {
-    font-size: 18pt;
+    font-size: 16pt;
     text-align: left;
     color: azure;
-    text-shadow: 1px 1px 4px turquoise;
+    text-shadow: 1px 1px 4px #9a031fe4;
     padding: 8px 8px 8px 16px;
     display: grid;
     grid-template-columns: 70% 30%;
@@ -60,11 +60,11 @@ body {
 }
 
 .btn__spfunc {
-    color: darkmagenta;
+    color: #850018;
 }
 
 .btn__spfunc:hover {
-    color: rgb(192, 0, 192);
+    color: #570010;
 }
 
 .message__container {
@@ -76,7 +76,7 @@ body {
 
 .input {
     outline: none;
-    font-size: 18px;
+    font-size: 12pt;
 }
 
 .input__panel {
@@ -91,7 +91,7 @@ body {
 .input__message {
     border: none;
     background-color: azure;
-    color: darkmagenta;
+    color: #9A031E;
     border-radius: 16px 0 0 16px;
     padding-left: 8px;
 }
@@ -99,14 +99,14 @@ body {
 .btn__send {
     border: none;
     border-right: none;
-    background-color: darkmagenta;
+    background-color: #850018;
     color: azure;
     border-radius: 0 16px 16px 0;
     transition-duration: 0.2s;
 }
 
 .btn__send:hover {
-    background-color: rgb(192, 0, 192);
+    background-color: #570010;
 }
 
 .btn__send:active {
@@ -114,7 +114,7 @@ body {
 }
 
 .text__message {
-    font-size: 18px;
+    font-size: 12pt;
 }
 
 .text__left {
@@ -137,7 +137,7 @@ body {
     display: inline-block;
     box-sizing: content-box;
     color: azure;
-    background: darkmagenta;
+    background: #9A031E;
     text-align: left;
     padding: 8px 8px 8px 20px;
     border-radius: 16px 16px 16px 0px;
@@ -149,8 +149,8 @@ body {
     width: 66.66%;
     display: inline-block;
     box-sizing: content-box;
-    color: azure;
-    background: rgba(0, 0, 129, 0.9);
+    color: #9A031E;
+    background: azure;
     text-align: right;
     padding: 8px 20px 8px 8px;
     border-radius: 16px 16px 0px 16px;
@@ -177,7 +177,7 @@ body {
     font-size: 14px;
     display: inline-block;
     box-sizing: content-box;
-    color: rgba(0, 184, 174, 0.9);
+    color: #ff9028;
     padding: 8px 8px 8px 20px;
     border-radius: 16px 16px 16px 16px;
     word-wrap: break-word;
@@ -218,7 +218,7 @@ body {
 .modal .modal-content {
     border: none;
     color: azure;
-    background-color: darkmagenta;
+    background-color: #9A031E;
 }
 
 .modal .modal-header {
