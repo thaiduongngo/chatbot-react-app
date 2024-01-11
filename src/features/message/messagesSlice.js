@@ -12,6 +12,7 @@ const initialState = {
     inputMsg: null,
     resMsg: { context: null },
     inputText: '',
+    voiceToTextProcessing: false,
 };
 
 
@@ -34,9 +35,8 @@ export const fetchMessage = createAsyncThunk('fetchMessage', async (resMes) => {
             i++;
         }
         chat_history = chat_history.slice(maxChatHistory * -1)
-        console.log(chat_history);
         const res = await axios.post(
-            `http://localhost:8081/api/chat`,
+            `http://localhost:8081/api/chat/`,
             {
                 text_message: resMes.inputText,
                 chat_history: chat_history,
@@ -47,6 +47,32 @@ export const fetchMessage = createAsyncThunk('fetchMessage', async (resMes) => {
         return console.log(err);
     }
 });
+
+const convertBlobToBase64 = async blob => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = reject;
+    reader.onload = () => {
+        resolve(reader.result);
+    };
+    reader.readAsDataURL(blob);
+});
+
+export const fetchTextFromAudio = createAsyncThunk(
+    'fetchTextFromAudio',
+    async recBlob => {
+        try {
+            const b64_string = await convertBlobToBase64(recBlob);
+            const res = await axios.post(
+                `http://localhost:8081/api/audio/transcription/`,
+                {
+                    b64_string: b64_string,
+                }
+            );
+            return res.data;
+        } catch (err) {
+            return console.log(err);
+        }
+    });
 
 
 const messagesSlice = createSlice({
@@ -69,6 +95,10 @@ const messagesSlice = createSlice({
             state.msgs = action.payload;
         },
 
+        setVoiceToTextProcessing: (state, action) => {
+            state.voiceToTextProcessing = action.payload;
+        },
+
         clearAll: (state, _) => {
             state.msgs = [
                 {
@@ -81,10 +111,16 @@ const messagesSlice = createSlice({
             state.inputMsg = null;
             state.resMsg = { context: null };
             state.inputText = '';
+            state.voiceToTextProcessing = false;
         },
     },
 
     extraReducers: builder => {
+        builder.addCase(fetchTextFromAudio.fulfilled, (state, action) => {
+            state.inputText = action.payload.response;
+            state.voiceToTextProcessing = false;
+        });
+
         builder.addCase(fetchMessage.fulfilled, (state, action) => {
             const mes = {
                 id: Date.now(),
@@ -112,8 +148,7 @@ const messagesSlice = createSlice({
     },
 });
 
-
-export const { setInputText, setInputMsg, setMsgs, clearAll } =
+export const { setInputText, setInputMsg, setMsgs, setVoiceToTextProcessing, clearAll } =
     messagesSlice.actions;
 
 export default messagesSlice.reducer;

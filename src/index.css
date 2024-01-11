@@ -68,7 +68,7 @@ body {
 }
 
 .message__container {
-    height: 82%;
+    height: 79%;
     padding: 0 12px;
     overflow-y: auto;
     scroll-behavior: smooth;
@@ -79,11 +79,23 @@ body {
     font-size: 12pt;
 }
 
+
+.input__recorder {
+    margin: 8px 16px;
+    border-radius: 16px;
+    display: block;
+}
+
+.recorder {
+    display: block;
+}
+
+
 .input__panel {
     height: 7%;
     min-height: 42px;
     display: grid;
-    grid-template-columns: 80% 20%;
+    grid-template-columns: auto 19%;
     margin: 8px 16px;
     border-radius: 16px;
 }
@@ -183,6 +195,10 @@ body {
     word-wrap: break-word;
 }
 
+.spinner2 {
+    color: #ff9028;
+}
+
 .popover {
     background: rgba(0, 184, 174, 0.9);
 }
@@ -219,6 +235,7 @@ body {
     border: none;
     color: azure;
     background-color: #9A031E;
+    z-index: 99999;
 }
 
 .modal .modal-header {

@@ -1,19 +1,29 @@
 import { IoIosPaperPlane } from 'react-icons/io';
+import Spinner from 'react-bootstrap/Spinner';
+import Button from 'react-bootstrap/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
+import { AudioRecorder, useAudioRecorder } from 'react-audio-voice-recorder';
 import {
     setInputText,
     setInputMsg,
     setMsgs,
+    setVoiceToTextProcessing,
     fetchMessage,
+    fetchTextFromAudio
 } from '../features/message/messagesSlice';
 import ConfirmModal from './ConfirmModal';
 
 const InputPanel = () => {
     const dispatch = useDispatch();
-    const { inputText, resMsg, msgs } = useSelector(
+
+    const { inputText, resMsg, msgs, voiceToTextProcessing } = useSelector(
         store => store.messages
     );
+
+    const {
+        recordingBlob,
+    } = useAudioRecorder();
 
     const [show, setShow] = useState(false);
 
@@ -35,6 +45,16 @@ const InputPanel = () => {
 
         scrollContainer();
     }, [msgs]);
+
+    useEffect(() => {
+        if (!recordingBlob) return;
+    }, [recordingBlob])
+
+
+    const sendAudio = (recBlob) => {
+        dispatch(setVoiceToTextProcessing(true));
+        dispatch(fetchTextFromAudio(recBlob));
+    };
 
     const sendMessage = () => {
         const getMessage = () => {
@@ -72,6 +92,33 @@ const InputPanel = () => {
 
     return (
         <form>
+            <div className='input__recorder'>
+                <span className='recorder' style={voiceToTextProcessing ? ({ display: 'none' }) : ({ display: 'block' })}>
+                    <AudioRecorder
+                        onRecordingComplete={sendAudio}
+                        audioTrackConstraints={{
+                            noiseSuppression: true,
+                            echoCancellation: true,
+                        }}
+                        downloadOnSavePress={false}
+                        downloadFileExtension="webm"
+                        showVisualizer={true}
+                    />
+                </span>
+                {voiceToTextProcessing ? (
+                    <span className='recorder'>
+                        <Button variant="warning">
+                            <Spinner
+                                as="span"
+                                animation="grow"
+                                size="sm"
+                                role="status"
+                                aria-hidden="true"
+                            />
+                            Processing...
+                        </Button></span>
+                ) : (<span className='recorder_wait' />)}
+            </div>
             <div className='input__panel'>
                 <input
                     type='text'
@@ -81,6 +128,7 @@ const InputPanel = () => {
                     onChange={e => {
                         dispatch(setInputText(e.target.value));
                     }}
+                    disabled={voiceToTextProcessing}
                 />
                 <button
                     className='input btn__send'
@@ -88,6 +136,7 @@ const InputPanel = () => {
                         e.preventDefault();
                         inputText.trim() && sendMessage();
                     }}
+                    disabled={voiceToTextProcessing}
                 >
                     <IoIosPaperPlane />
                 </button>
@@ -95,7 +144,7 @@ const InputPanel = () => {
             <ConfirmModal
                 show={show}
                 textHeader='Đóng'
-                textContent='Xác nhận đóng App?'
+                textContent='Xác nhận đóng ứng dụng?'
                 onHide={() => {
                     setShow(false);
                 }}
@@ -105,7 +154,7 @@ const InputPanel = () => {
                     setShow(false);
                 }}
             />
-        </form>
+        </form >
     );
 };
 
